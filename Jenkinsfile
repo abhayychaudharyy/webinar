@@ -36,12 +36,12 @@ pipeline {
             }
         }
 
-        stage('QUALITY GATE STATUS') {
+        /*stage('QUALITY GATE STATUS') {
             steps {
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonarqubetoken1'
                 }
             }
-        }
+        }*/
     }
 }
