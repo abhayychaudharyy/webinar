@@ -29,7 +29,7 @@ pipeline {
       stage('STATIC CODE ANALYSIS') {
             steps {
                 script {
-                    withSonarQubeEnv(credentialsId: 'token6') {
+                    withSonarQubeEnv(credentialsId: 'sonarqubetoken1') {
                         sh 'mvn clean package sonar:sonar'
                     }
                 }
@@ -39,54 +39,9 @@ pipeline {
         stage('QUALITY GATE STATUS') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'token6'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqubetoken1'
                 }
             }
         }
-        /*
-        stage('Upload Artifacts to Nexus'){
-            
-            steps{
-                script{
-                    nexusArtifactUploader artifacts: 
-                [
-                    [
-                    artifactId: 'springboot',
-                    classifier: '', 
-                    file: 'target/Thapar.jar', 
-                    type: 'jar'
-                    ]
-                ], 
-                    credentialsId: 'nexuscreds', 
-                    groupId: 'com.example', 
-                    nexusUrl: '54.209.100.177:8081', 
-                    nexusVersion: 'nexus3', 
-                    protocol: 'http', 
-                    repository: 'java-release', 
-                    version: '1.0.0'
-                }
-            }
-        }
-        /*stage("Docker Image Build"){
-            steps {
-                script {
-                    sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID vishalchauhan9/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker image tag $JOB_NAME:v1.$BUILD_ID vishalchauhan9/$JOB_NAME:latest'
-                }
-            }
-        }
-        stage("Push Docker Image to Docker HUB"){
-            steps {
-                script {
-                    
-                    withCredentials([string(credentialsId: 'dockerhub_password', variable: 'dockerhub_creds')]) {
-                        sh 'docker login -u vishalchauhan9 -p ${dockerhub_creds}'
-                        sh 'docker image push vishalchauhan9/$JOB_NAME:v1.$BUILD_ID'
-                        sh 'docker image push vishalchauhan9/$JOB_NAME:latest'
-                    }
-                }
-            }
-        }*/
     }
 }
